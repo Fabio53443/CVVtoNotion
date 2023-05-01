@@ -34,7 +34,6 @@ async function agendafun() {
   fs.writeFileSync('agenda.json', JSON.stringify(agenda));
   setTimeout(() => {
     classeviva.logout();
-    process.exit();
   }, 3500);
   return agenda;
 }
@@ -138,3 +137,4 @@ for (let i = 0; i < agenda.length; i++) {
   }
 
 }
+process.exit();
