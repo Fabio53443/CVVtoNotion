@@ -20,7 +20,7 @@ Questo è sconsigliato perchè i professori spesso non usano questa funzione e r
 2. Appunta la chive e l'id database. Non imporarli come env var perchè non mi andava di implementarlo. (le PR sono aperte se proprio ti va)
 3. Vai in `src/main.js` e sostituisci `NOTIONAPIKEY`, `DATABASEID`, `CVVUSERNAME` e `CVVPSWD` con i valori effettivi. Lascia le virgolette/apostrofi.
 
-## Node
+### Node
 
 1. Installa Node.js e NPM (latest stable)
 2. `npm install` per installare tutte le dipendenze
