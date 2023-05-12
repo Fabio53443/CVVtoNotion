@@ -22,6 +22,7 @@ Questo è sconsigliato perchè i professori spesso non sanno usano questa funzio
 ### Node
 
 1. Installa Node.js e NPM (latest stable)
-2. `npm install` per installare tutte le dipendenze
-3. `npm run setup` per impostare le variabili
-4. `npm run sync` per eseguire effettivamente lo script (quello che poi eseguirai tutte le volte).
+2. Clona la repo (o scarica lo zip) e apri un terminale nella cartella. 
+3. `npm install` per installare tutte le dipendenze
+4. `npm run setup` per impostare le variabili
+5. `npm run sync` per eseguire effettivamente lo script (quello che poi eseguirai tutte le volte).
