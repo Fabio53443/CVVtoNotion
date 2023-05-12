@@ -1,23 +1,30 @@
 import { Client } from "@notionhq/client";
 import fs from "fs";
-import pkg from 'classeviva.js';
+import * as dotenv from "dotenv";
+import pkg from "classeviva.js";
 const { Rest, Enums } = pkg;
+dotenv.config();
+import express from "express";
+
+
+//KEYS!
+let notionauth = process.env.NOTION_KEY;
+let cvvauth = process.env.CVV_ID;
+let cvvpswd = process.env.CVV_PSWD;
+let dbid = process.env.DB_ID;
+
+
+
 const notion = new Client({
-  auth: "NOTIONAPIKEY",
+  auth: notionauth,
 });
 
-const databaseId = "DATABASEID";
-let evtID;
-let evtstart;
-let authnam;
-let notes;
-let surname;
-let skip;
-let pagetitle;
+const databaseId = dbid;
+let evtID, evtstart, authnam, notes, surname, skip, pagetitle;
 
 const classeviva = new Rest({
-  username: 'CVVUSERNAME',
-  password: 'CVVPSWD!',
+  username: cvvauth,
+  password: cvvpswd,
   app: Enums.Apps.Students, //Optional: default is Enums.Apps.Students
   state: Enums.States.Italy, //Optional: default is Enums.States.Italy
   debug: false, //Optional: default is false, if true it will log some info
@@ -26,21 +33,19 @@ const classeviva = new Rest({
 
 async function agendafun() {
   await classeviva.login();
-  let today = new Date().toISOString().split('T')[0];
+  let today = new Date().toISOString().split("T")[0];
   let nextMonth = new Date();
   nextMonth.setMonth(nextMonth.getMonth() + 1);
-  nextMonth = nextMonth.toISOString().split('T')[0];
+  nextMonth = nextMonth.toISOString().split("T")[0];
   let agenda = await classeviva.getAgenda("all", today, nextMonth);
-  fs.writeFileSync('agenda.json', JSON.stringify(agenda));
+  fs.writeFileSync("agenda.json", JSON.stringify(agenda));
   setTimeout(() => {
     classeviva.logout();
   }, 3500);
   return agenda;
 }
 
-
 async function addItem(title, evtID, evtstart, authnam, notes) {
-
   try {
     const response = await notion.pages.create({
       parent: { database_id: databaseId },
@@ -77,24 +82,23 @@ async function addItem(title, evtID, evtstart, authnam, notes) {
           ],
         },
       },
-        
+
       children: [
         {
-          "object": "block",
-          "type": "paragraph",
-          "paragraph": {
-            "rich_text": [
+          object: "block",
+          type: "paragraph",
+          paragraph: {
+            rich_text: [
               {
-                "type": "text",
-                "text": {
-                  "content": notes,
+                type: "text",
+                text: {
+                  content: notes,
                 },
-            
               },
             ],
-            },
           },
-        ],
+        },
+      ],
     });
     console.log("Success! Entry added.");
   } catch (error) {
@@ -111,8 +115,10 @@ async function query() {
     alreadyin.push(queryResponse.results[i].properties.evtID.number);
   }
   return alreadyin;
-} await query()
-  .then((alreadyin) => { skip = alreadyin; });
+}
+await query().then((alreadyin) => {
+  skip = alreadyin;
+});
 
 let agenda = await agendafun();
 for (let i = 0; i < agenda.length; i++) {
@@ -124,7 +130,12 @@ for (let i = 0; i < agenda.length; i++) {
   authnam = authnam.replace(/\w\S*/g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
+
   surname = authnam.split(" ")[0];
+  if (surname === "Di") {
+    surname = surname + " " + authnam.split(" ")[1];
+  }
+
   pagetitle = `${surname}, ${evtstart}`;
   // console log everything
 
@@ -135,6 +146,5 @@ for (let i = 0; i < agenda.length; i++) {
     console.log("Not in database, adding...");
     await addItem(pagetitle, evtID, evtstart, authnam, notes);
   }
-
 }
 process.exit();
