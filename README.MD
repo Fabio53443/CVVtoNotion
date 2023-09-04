@@ -1,3 +1,4 @@
+![Logo](logo.png)
 # CVV to Notion
 
 Un'app Node.js per inviare l'agenda di Classeviva ad un Database di Notion. Basasto sul (fantastico) [Classeviva.js](https://github.com/47PADO47/Classeviva.js/).
