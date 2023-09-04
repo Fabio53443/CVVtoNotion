@@ -16,7 +16,7 @@ Questo è sconsigliato perchè i professori spesso non sanno usano questa funzio
 
 ### Notion
 
-1. Segui [questa](https://developers.notion.com/docs/create-a-notion-integration) guida per creare un _integration_ e concedi l'accesso ad una **copia** di questo [questo database template](https://fabio53443.notion.site/3a3450e03cc64560adcad5139f191ab3). (tasto "Duplica" in alto a sx). Potrai aggiungere altre proprietà ma non modificare in nessun modo quelle già presenti, altrimenti il programma non funzionerà a dovere.
+1. Segui [questa](https://developers.notion.com/docs/create-a-notion-integration#create-your-integration-in-notion) guida per creare un _integration_ e concedi l'accesso ad una **copia** di questo [questo database template](https://fabio53443.notion.site/3a3450e03cc64560adcad5139f191ab3). (tasto "Duplica" in alto a sx). Potrai aggiungere altre proprietà ma non modificare in nessun modo quelle già presenti, altrimenti il programma non funzionerà a dovere.
    1. ti consiglio di creare nuove view in notion, come calendario, etc.
 2. Appunta la chive e l'id database (lo puoi recuperare dall'URL, copia fino a ?). Ti serviranno più tardi.
 
