@@ -4,15 +4,22 @@ import * as dotenv from "dotenv";
 import pkg from "classeviva.js";
 const { Rest, Enums } = pkg;
 dotenv.config();
-import express from "express";
+
+if (!fs.existsSync("secrets.json")) {
+  console.log("Please run npm run setup first!");
+  process.exit();
+}
+
+const secrets = JSON.parse(fs.readFileSync('secrets.json'));
+const notionauth = secrets.NOTION_KEY;
+const cvvauth = secrets.CVV_ID;
+const cvvpswd = secrets.CVV_PSWD;
+const dbid = secrets.DB_ID;
+
+//check if every variale is filled else raise error
 
 
-//KEYS!
-let notionauth = process.env.NOTION_KEY;
-let cvvauth = process.env.CVV_ID;
-let cvvpswd = process.env.CVV_PSWD;
-let dbid = process.env.DB_ID;
-
+console.log(notionauth, cvvauth, cvvpswd, dbid)
 
 
 const notion = new Client({

@@ -1,25 +1,40 @@
 const readline = require('readline');
+const filesystem = require('fs');
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-console.log("Inserisci i dati di accesso a Notion e a CVV");
-rl.question('Enter NOTION_KEY: ', (notionKey) => {
-  process.env.NOTION_KEY = notionKey;
-  
-  rl.question('Enter DB_ID: ', (dbId) => {
-    process.env.DB_ID = dbId;
+console.log("Welcome to the setup of the Notion CVV Sync script. Please follow the instructions below");
 
-    rl.question('Enter CVV_ID: ', (cvvId) => {
-      process.env.CVV_ID = cvvId;
+try {
+  filesystem.readFileSync("secrets.json");
+} catch (e) {
+  filesystem.writeFileSync("secrets.json", "{}");
+}
 
-      rl.question('Enter CVV_PSWD: ', (cvvPwd) => {
-        process.env.CVV_PSWD = cvvPwd;
+let secrets = JSON.parse(filesystem.readFileSync("secrets.json"));
+const fields = ["NOTION_KEY", "DB_ID", "CVV_ID", "CVV_PSWD"];
 
-        rl.close();
-      });
+function promptUserForField(index) {
+  if (index >= fields.length) {
+    rl.close();
+    console.log("Setup complete. You can now run \"npm run sync\". Edit " + __dirname + "/secrets.json to change them.");
+    return;
+  }
+
+  const field = fields[index];
+  if (!secrets[field]) {
+    rl.question(`Please enter the value for ${field}: `, (answer) => {
+      secrets[field] = answer;
+      filesystem.writeFileSync("secrets.json", JSON.stringify(secrets));
+      promptUserForField(index + 1);
     });
-  });
-});
+  } else {
+    promptUserForField(index + 1);
+  }
+}
+
+promptUserForField(0);
+
