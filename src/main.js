@@ -37,10 +37,8 @@ console.log(`
 ╚═════╝ ╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝
 `);
 console.log("There is sensitive data below, such as your Notion API key and your CVV login. Redact before posting.\n");
-console.log("Notion API key: " + notionauth + "\n");
-console.log("CVV login: " + cvvauth + "\n");
-console.log("CVV password: " + cvvpswd + "\n");
-console.log("Notion database ID: " + dbid + "\n");
+console.log("Notion API key: " + notionauth + " Notion database ID: " + dbid + "CVV login: " + cvvauth + " CVV password: " + cvvpswd + "\n");
+
 
 
 const notion = new Client({
