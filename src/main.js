@@ -3,7 +3,6 @@ import fs from "fs";
 import * as dotenv from "dotenv";
 import pkg from "classeviva.js";
 const { Rest, Enums } = pkg;
-dotenv.config();
 
 if (!fs.existsSync("secrets.json")) {
   console.log("Please run npm run setup first!");
@@ -18,8 +17,30 @@ const dbid = secrets.DB_ID;
 
 //check if every variale is filled else raise error
 
+console.log(`
+     █▒▒    █▒▒         █▒▒ █▒▒         █▒▒        █▒▒                   █▒▒▒     █▒▒              █▒▒                           
+  █▒▒   █▒▒  █▒▒       █▒▒   █▒▒       █▒▒         █▒▒                   █▒ █▒▒   █▒▒              █▒▒    █▒                     
+ █▒▒          █▒▒     █▒▒     █▒▒     █▒▒        █▒█▒ █▒    █▒▒          █▒▒ █▒▒  █▒▒    █▒▒     █▒█▒ █▒        █▒▒     █▒▒ █▒▒  
+ █▒▒           █▒▒   █▒▒       █▒▒   █▒▒           █▒▒    █▒▒  █▒▒       █▒▒  █▒▒ █▒▒  █▒▒  █▒▒    █▒▒   █▒▒  █▒▒  █▒▒   █▒▒  █▒▒
+ █▒▒            █▒▒ █▒▒         █▒▒ █▒▒            █▒▒   █▒▒    █▒▒      █▒▒   █▒ █▒▒ █▒▒    █▒▒   █▒▒   █▒▒ █▒▒    █▒▒  █▒▒  █▒▒
+  █▒▒   █▒▒      █▒▒▒▒           █▒▒▒▒             █▒▒    █▒▒  █▒▒       █▒▒    █▒ ▒▒  █▒▒  █▒▒    █▒▒   █▒▒  █▒▒  █▒▒   █▒▒  █▒▒
+    █▒▒▒▒         █▒▒             █▒▒               █▒▒     █▒▒          █▒▒      █▒▒    █▒▒        █▒▒  █▒▒    █▒▒     █▒▒▒  █▒▒
 
-console.log(notionauth, cvvauth, cvvpswd, dbid)
+`);
+
+console.log(`
+██████╗ ███████╗██╗    ██╗ █████╗ ██████╗ ███████╗██╗
+██╔══██╗██╔════╝██║    ██║██╔══██╗██╔══██╗██╔════╝██║
+██████╔╝█████╗  ██║ █╗ ██║███████║██████╔╝█████╗  ██║
+██╔══██╗██╔══╝  ██║███╗██║██╔══██║██╔══██╗██╔══╝  ╚═╝
+██████╔╝███████╗╚███╔███╔╝██║  ██║██║  ██║███████╗██╗
+╚═════╝ ╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝
+`);
+console.log("There is sensitive data below, such as your Notion API key and your CVV login. Redact before posting.\n");
+console.log("Notion API key: " + notionauth + "\n");
+console.log("CVV login: " + cvvauth + "\n");
+console.log("CVV password: " + cvvpswd + "\n");
+console.log("Notion database ID: " + dbid + "\n");
 
 
 const notion = new Client({
