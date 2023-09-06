@@ -47,7 +47,7 @@ const notion = new Client({
 
 const databaseId = dbid;
 let evtID, evtstart, authnam, notes, surname, skip, pagetitle;
-
+console.log("Logging in to ClasseViva...");
 const classeviva = new Rest({
   username: cvvauth,
   password: cvvpswd,
@@ -56,21 +56,22 @@ const classeviva = new Rest({
   debug: false, 
   saveTempFile: true,
 });
+console.log("Logged in to ClasseViva!");
 
 async function agendafun() {
+  console.log("Fetching agenda...");
   await classeviva.login();
-  let today = new Date().toISOString().split("T")[0];
+  let today = new Date();
   let nextMonth = new Date();
   nextMonth.setMonth(nextMonth.getMonth() + 1);
-  nextMonth = nextMonth.toISOString().split("T")[0];
   let agenda = await classeviva.getAgenda("all", today, nextMonth);
   fs.writeFileSync("agenda.json", JSON.stringify(agenda));
   setTimeout(() => {
     classeviva.logout();
   }, 3500);
+  console.log("Fetched agenda!");
   return agenda;
 }
-
 async function addItem(title, evtID, evtstart, authnam, notes) {
   try {
     const response = await notion.pages.create({
