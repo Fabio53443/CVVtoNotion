@@ -16,7 +16,7 @@ Questo è sconsigliato perchè i professori spesso non sanno usano questa funzio
 ## Setup
 
 ### Video tutorial
-Grazie a [Gabbo144](https://github.com/Gabbo144) per questo tutorial:
+Grazie a [Gabbo144](https://github.com/Gabbo144) per questo tutorial: (yt: https://youtu.be/bw_Ae9YystY)
 [![Watch the video](https://img.youtube.com/vi/bw_Ae9YystY/maxresdefault.jpg)](https://youtu.be/bw_Ae9YystY)
 
 
