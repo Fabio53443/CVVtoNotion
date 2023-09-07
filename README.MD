@@ -15,6 +15,11 @@ Questo è sconsigliato perchè i professori spesso non sanno usano questa funzio
 
 ## Setup
 
+### Video tutorial
+Grazie a [Gabbo144](https://github.com/Gabbo144) per questo tutorial:
+[![Watch the video](https://img.youtube.com/vi/bw_Ae9YystY/maxresdefault.jpg)](https://youtu.be/bw_Ae9YystY)
+
+
 ### Notion
 
 1. Duplica [questo database template](https://fabio53443.notion.site/3a3450e03cc64560adcad5139f191ab3) nel tuo Workspace; Potrai aggiungere altre proprietà ma non modificare in nessun modo quelle già presenti, altrimenti il programma non funzionerà a dovere.
