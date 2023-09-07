@@ -5,7 +5,7 @@
   "description": "",
   "main": "./src/main.js",
   "scripts": {
-    "setup" : "node ./src/setup.cjs",
+    "setup" : "npm i && node ./src/setup.cjs",
     "sync": "node ./src/main.js"
   },
   "author": "",
