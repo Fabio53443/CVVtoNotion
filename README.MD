@@ -23,7 +23,7 @@ Grazie a [Gabbo144](https://github.com/Gabbo144) per questo tutorial:
 ### Notion
 
 1. Duplica [questo database template](https://fabio53443.notion.site/3a3450e03cc64560adcad5139f191ab3) nel tuo Workspace; Potrai aggiungere altre proprietà ma non modificare in nessun modo quelle già presenti, altrimenti il programma non funzionerà a dovere.
-2. Segui [questa](https://developers.notion.com/docs/create-a-notion-integration#create-your-integration-in-notion) guida per creare un _integration_. Appunta la chiave che ti viene mostrata in quanto ti servirà successivamente
+2. Vai su [questa](https://www.notion.so/my-integrations) pagine per creare un _integration_. Appunta la chiave che ti viene mostrata in quanto ti servirà successivamente
 ![Integration](img/image.png) 
 3. Concedi l'accesso alla copia del database che hai fatto.
 ![db](img/db.png)
