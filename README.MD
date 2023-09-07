@@ -1,4 +1,5 @@
 ![Logo](img/logo.png)
+
 # CVV to Notion
 
 Un'app Node.js per inviare l'agenda di Classeviva ad un Database di Notion. Basasto sul (fantastico) [Classeviva.js](https://github.com/47PADO47/Classeviva.js/).
@@ -26,7 +27,6 @@ Questo è sconsigliato perchè i professori spesso non sanno usano questa funzio
 ### Node
 
 1. Installa Node.js e NPM (latest stable)
-2. Clona la repo (o scarica lo zip) e apri un terminale nella cartella. 
+2. Clona la repo (o scarica lo zip) e apri un terminale nella cartella.
 3. `npm run setup` per scaricare tutte le dipendenze e impostare le variabili
 4. `npm run sync` per eseguire effettivamente lo script e sincronizzare l'agenda (quello che poi eseguirai tutte le volte).
-
