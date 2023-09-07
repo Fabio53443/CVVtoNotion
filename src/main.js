@@ -27,20 +27,8 @@ console.log(`
     █▒▒▒▒         █▒▒             █▒▒               █▒▒     █▒▒          █▒▒      █▒▒    █▒▒        █▒▒  █▒▒    █▒▒     █▒▒▒  █▒▒
 
 `);
-console.log("Version: 1.1.1")
-console.log(`
-██████╗ ███████╗██╗    ██╗ █████╗ ██████╗ ███████╗██╗
-██╔══██╗██╔════╝██║    ██║██╔══██╗██╔══██╗██╔════╝██║
-██████╔╝█████╗  ██║ █╗ ██║███████║██████╔╝█████╗  ██║
-██╔══██╗██╔══╝  ██║███╗██║██╔══██║██╔══██╗██╔══╝  ╚═╝
-██████╔╝███████╗╚███╔███╔╝██║  ██║██║  ██║███████╗██╗
-╚═════╝ ╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝
-`);
-console.log("There is sensitive data below, such as your Notion API key and your CVV login. Redact before posting.\n");
-console.log("Notion API key: " + notionauth + " Notion database ID: " + dbid + "CVV login: " + cvvauth + " CVV password: " + cvvpswd + "\n");
-
-
-
+console.log("Version: 1.1.2 | Made by @fabio53443. https://github.com/Fabio53443/CVVtoNotion")
+console.log(`Logged in as ${cvvauth}. Not you? Edit secrets.json.`)
 const notion = new Client({
   auth: notionauth,
 });
