@@ -197,8 +197,7 @@ async function main(notionauth, cvvauth, cvvpswd, dbid) {
   let notionemail = await notion.users.me();
   console.log(`Connected to Notion with the "${notionemail.name}" integration.`)
   
-  var agenda = [];
-  agenda = await fetchAgenda(cvvauth, cvvpswd);
+  let agenda = await fetchAgenda(cvvauth, cvvpswd);
   await syncAgenda(agenda, notion, dbid);
 
 }
