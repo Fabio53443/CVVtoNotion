@@ -7,21 +7,7 @@ const { Rest, Enums } = pkg;
 
 //check if every variale is filled else raise error
 
-console.log(`
-     █▒▒    █▒▒         █▒▒ █▒▒         █▒▒        █▒▒                   █▒▒▒     █▒▒              █▒▒                           
-  █▒▒   █▒▒  █▒▒       █▒▒   █▒▒       █▒▒         █▒▒                   █▒ █▒▒   █▒▒              █▒▒    █▒                     
- █▒▒          █▒▒     █▒▒     █▒▒     █▒▒        █▒█▒ █▒    █▒▒          █▒▒ █▒▒  █▒▒    █▒▒     █▒█▒ █▒        █▒▒     █▒▒ █▒▒  
- █▒▒           █▒▒   █▒▒       █▒▒   █▒▒           █▒▒    █▒▒  █▒▒       █▒▒  █▒▒ █▒▒  █▒▒  █▒▒    █▒▒   █▒▒  █▒▒  █▒▒   █▒▒  █▒▒
- █▒▒            █▒▒ █▒▒         █▒▒ █▒▒            █▒▒   █▒▒    █▒▒      █▒▒   █▒ █▒▒ █▒▒    █▒▒   █▒▒   █▒▒ █▒▒    █▒▒  █▒▒  █▒▒
-  █▒▒   █▒▒      █▒▒▒▒           █▒▒▒▒             █▒▒    █▒▒  █▒▒       █▒▒    █▒ ▒▒  █▒▒  █▒▒    █▒▒   █▒▒  █▒▒  █▒▒   █▒▒  █▒▒
-    █▒▒▒▒         █▒▒             █▒▒               █▒▒     █▒▒          █▒▒      █▒▒    █▒▒        █▒▒  █▒▒    █▒▒     █▒▒▒  █▒▒
-
-`);
-console.log(
-  "Version: 1.2.0 | Made by @fabio53443. https://github.com/Fabio53443/CVVtoNotion\n"
-);
-
-function firstLetterAllWordsUpper(sentence) {
+export function firstLetterAllWordsUpper(sentence) {
   const words = sentence.split(" ");
 
   for (let i = 0; i < words.length; i++) {
@@ -187,6 +173,21 @@ async function syncAgenda(agenda, notion, databaseId) {
 }
 
 async function main(notionauth, cvvauth, cvvpswd, dbid) {
+
+  console.log(`
+      █▒▒    █▒▒         █▒▒ █▒▒         █▒▒        █▒▒                   █▒▒▒     █▒▒              █▒▒                           
+    █▒▒   █▒▒  █▒▒       █▒▒   █▒▒       █▒▒         █▒▒                   █▒ █▒▒   █▒▒              █▒▒    █▒                     
+  █▒▒          █▒▒     █▒▒     █▒▒     █▒▒        █▒█▒ █▒    █▒▒          █▒▒ █▒▒  █▒▒    █▒▒     █▒█▒ █▒        █▒▒     █▒▒ █▒▒  
+  █▒▒           █▒▒   █▒▒       █▒▒   █▒▒           █▒▒    █▒▒  █▒▒       █▒▒  █▒▒ █▒▒  █▒▒  █▒▒    █▒▒   █▒▒  █▒▒  █▒▒   █▒▒  █▒▒
+  █▒▒            █▒▒ █▒▒         █▒▒ █▒▒            █▒▒   █▒▒    █▒▒      █▒▒   █▒ █▒▒ █▒▒    █▒▒   █▒▒   █▒▒ █▒▒    █▒▒  █▒▒  █▒▒
+    █▒▒   █▒▒      █▒▒▒▒           █▒▒▒▒             █▒▒    █▒▒  █▒▒       █▒▒    █▒ ▒▒  █▒▒  █▒▒    █▒▒   █▒▒  █▒▒  █▒▒   █▒▒  █▒▒
+      █▒▒▒▒         █▒▒             █▒▒               █▒▒     █▒▒          █▒▒      █▒▒    █▒▒        █▒▒  █▒▒    █▒▒     █▒▒▒  █▒▒
+
+  `);
+  console.log(
+    "Version: 1.2.0 | Made by @fabio53443. https://github.com/Fabio53443/CVVtoNotion\n"
+  );
+
   console.log(`Logged in CVV as ${cvvauth}. Not you? Edit secrets.json.`);
 
   const notion =  new Client({
@@ -204,4 +205,3 @@ async function main(notionauth, cvvauth, cvvpswd, dbid) {
 
 const { notionauth, cvvauth, cvvpswd, dbid } = getJSONSecrets("secrets.json");
 main(notionauth, cvvauth, cvvpswd, dbid);
-
