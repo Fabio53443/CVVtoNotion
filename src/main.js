@@ -2,18 +2,8 @@ import { Client } from "@notionhq/client";
 import fs from "fs";
 import * as dotenv from "dotenv";
 import pkg from "classeviva.js";
+import path from "path";
 const { Rest, Enums } = pkg;
-
-if (!fs.existsSync("secrets.json")) {
-  console.log("Please run npm run setup first!");
-  process.exit();
-}
-
-const secrets = JSON.parse(fs.readFileSync('secrets.json'));
-const notionauth = secrets.NOTION_KEY;
-const cvvauth = secrets.CVV_ID;
-const cvvpswd = secrets.CVV_PSWD;
-const dbid = secrets.DB_ID;
 
 //check if every variale is filled else raise error
 
@@ -27,40 +17,61 @@ console.log(`
     █▒▒▒▒         █▒▒             █▒▒               █▒▒     █▒▒          █▒▒      █▒▒    █▒▒        █▒▒  █▒▒    █▒▒     █▒▒▒  █▒▒
 
 `);
-console.log("Version: 1.1.2 | Made by @fabio53443. https://github.com/Fabio53443/CVVtoNotion")
-console.log(`Logged in as ${cvvauth}. Not you? Edit secrets.json.`)
-const notion = new Client({
-  auth: notionauth,
-});
+console.log(
+  "Version: 1.2.0 | Made by @fabio53443. https://github.com/Fabio53443/CVVtoNotion\n"
+);
 
-const databaseId = dbid;
-let evtID, evtstart, authnam, notes, surname, skip, pagetitle;
-console.log("Logging in to ClasseViva...");
-const classeviva = new Rest({
-  username: cvvauth,
-  password: cvvpswd,
-  app: Enums.Apps.Students, 
-  state: Enums.States.Italy, 
-  debug: false, 
-  saveTempFile: true,
-});
-console.log("Logged in to ClasseViva!");
+function firstLetterAllWordsUpper(sentence) {
+  const words = sentence.split(" ");
 
-async function agendafun() {
+  for (let i = 0; i < words.length; i++) {
+    if (words[i].length <= 1) continue;
+    words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+  }
+  return words.join(" ");
+}
+
+function getJSONSecrets(path) {
+  if (!fs.existsSync(path)) {
+    console.log("Please run npm run setup first!");
+    process.exit();
+  }
+
+  const secrets = JSON.parse(fs.readFileSync("secrets.json"));
+  const notionauth = secrets.NOTION_KEY;
+  const cvvauth = secrets.CVV_ID;
+  const cvvpswd = secrets.CVV_PSWD;
+  const dbid = secrets.DB_ID;
+  return { notionauth, cvvauth, cvvpswd, dbid };
+}
+
+async function fetchAgenda(cvvauth, cvvpswd) {
+
+  console.log("Logging in to ClasseViva...");
+  const classeviva = new Rest({
+    username: cvvauth,
+    password: cvvpswd,
+    app: Enums.Apps.Students,
+    state: Enums.States.Italy,
+    debug: false,
+    saveTempFile: true,
+  });
+  console.log("Logged in to ClasseViva!");
+
   console.log("Fetching agenda...");
   await classeviva.login();
   let today = new Date();
   let nextMonth = new Date();
   nextMonth.setMonth(nextMonth.getMonth() + 1);
   let agenda = await classeviva.getAgenda("all", today, nextMonth);
-  fs.writeFileSync("agenda.json", JSON.stringify(agenda));
   setTimeout(() => {
     classeviva.logout();
   }, 3500);
-  console.log("Fetched agenda!");
+  console.log("Agenda successfully fetched!");
   return agenda;
 }
-async function addItem(title, evtID, evtstart, authnam, notes) {
+
+async function addItem(notion, title, evtID, evtstart, authnam, notes, subj, databaseId) {
   try {
     const response = await notion.pages.create({
       parent: { database_id: databaseId },
@@ -96,6 +107,16 @@ async function addItem(title, evtID, evtstart, authnam, notes) {
             },
           ],
         },
+        subject: {
+          type: "rich_text",
+          rich_text: [
+            {
+              text: {
+                content: subj,
+              },
+            },
+          ],
+        },
       },
 
       children: [
@@ -117,49 +138,70 @@ async function addItem(title, evtID, evtstart, authnam, notes) {
     });
     console.log("Success! Entry added.");
   } catch (error) {
-    console.error(error.body);
+    console.error(error);
   }
-}
-async function query() {
+  }
+
+
+async function query(notion, databaseId) {
+  console.log("Querying database...");
+
   const queryResponse = await notion.databases.query({
     database_id: databaseId,
   });
-  // queryResponse.results[i].properties.evtID.number for every document in the json
   let alreadyin = [];
   for (let i = 0; i < queryResponse.results.length; i++) {
     alreadyin.push(queryResponse.results[i].properties.evtID.number);
   }
   return alreadyin;
 }
-await query().then((alreadyin) => {
-  skip = alreadyin;
-});
 
-let agenda = await agendafun();
-for (let i = 0; i < agenda.length; i++) {
-  evtID = agenda[i].evtId;
-  console.log(evtID);
-  notes = agenda[i].notes;
-  evtstart = agenda[i].evtDatetimeBegin.split("T")[0];
-  authnam = agenda[i].authorName;
-  authnam = authnam.replace(/\w\S*/g, function (txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
+async function syncAgenda(agenda, notion, databaseId) {
+  let evtID, evtstart, authnam, notes, surname, skip, pagetitle, subj;
+  skip = await query(notion, databaseId);
+  for (let i = 0; i < agenda.length; i++) {
+    evtID = agenda[i].evtId;
+    notes = agenda[i].notes;
+    evtstart = agenda[i].evtDatetimeBegin.split("T")[0];
+    authnam = agenda[i].authorName;
+    authnam = authnam.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
 
-  surname = authnam.split(" ")[0];
-  if (surname === "Di") {
-    surname = surname + " " + authnam.split(" ")[1];
-  }
+    surname = authnam.split(" ")[0];
+    if (surname === "Di") {
+      surname = surname + " " + authnam.split(" ")[1];
+    }
+    let subj = firstLetterAllWordsUpper(agenda[i].subjectDesc.toLowerCase());
 
-  pagetitle = `${surname}, ${evtstart}`;
-  // console log everything
+    pagetitle = `${subj}, ${evtstart}`;
 
-  if (skip.includes(evtID)) {
-    console.log("Already in database, skipping...");
-    continue;
-  } else {
-    console.log("Not in database, adding...");
-    await addItem(pagetitle, evtID, evtstart, authnam, notes);
+    if (skip.includes(evtID)) {
+      console.log(evtID + " already in database, skipping...");
+      continue;
+    } else {
+      console.log("Not in database, adding...");
+      await addItem(notion, pagetitle, evtID, evtstart, authnam, notes, subj, databaseId);
+    }
   }
 }
-process.exit();
+
+async function main(notionauth, cvvauth, cvvpswd, dbid) {
+  console.log(`Logged in CVV as ${cvvauth}. Not you? Edit secrets.json.`);
+
+  const notion =  new Client({
+    auth: notionauth,
+  });
+
+  let notionemail = await notion.users.me();
+  console.log(`Connected to Notion with the "${notionemail.name}" integration.`)
+  
+  var agenda = [];
+  agenda = await fetchAgenda(cvvauth, cvvpswd);
+  await syncAgenda(agenda, notion, dbid);
+
+}
+
+const { notionauth, cvvauth, cvvpswd, dbid } = getJSONSecrets("secrets.json");
+main(notionauth, cvvauth, cvvpswd, dbid);
+
