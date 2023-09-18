@@ -3,6 +3,7 @@ import fs from "fs";
 import * as dotenv from "dotenv";
 import pkg from "classeviva.js";
 import path from "path";
+import { type } from "os";
 const { Rest, Enums } = pkg;
 
 //check if every variale is filled else raise error
@@ -54,6 +55,7 @@ async function fetchAgenda(cvvauth, cvvpswd) {
     classeviva.logout();
   }, 3500);
   console.log("Agenda successfully fetched!");
+  console.log(agenda)
   return agenda;
 }
 
@@ -158,18 +160,27 @@ async function syncAgenda(agenda, notion, databaseId) {
     if (surname === "Di") {
       surname = surname + " " + authnam.split(" ")[1];
     }
-    let subj = firstLetterAllWordsUpper(agenda[i].subjectDesc.toLowerCase());
-
-    pagetitle = `${subj}, ${evtstart}`;
 
     if (skip.includes(evtID)) {
       console.log(evtID + " already in database, skipping...");
       continue;
     } else {
       console.log("Not in database, adding...");
-      await addItem(notion, pagetitle, evtID, evtstart, authnam, notes, subj, databaseId);
     }
+    let pagetitlemain;
+    if (agenda[i].subjectDesc) {
+      subj = agenda[i].subjectDesc;
+      subj = firstLetterAllWordsUpper(subj.toLowerCase());
+      pagetitlemain = subj;
+    } else {
+      subj = "N/A";
+      pagetitlemain = authnam;
+    }
+    pagetitle = `${pagetitlemain}, ${evtstart}`;
+    await addItem(notion, pagetitle, evtID, evtstart, authnam, notes, subj, databaseId);
+  
   }
+
 }
 
 async function main(notionauth, cvvauth, cvvpswd, dbid) {
